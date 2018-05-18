@@ -62,9 +62,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DBFilesClient.NET, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DBFilesClient.NET.1.1.4\lib\net452\DBFilesClient.NET.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
@@ -154,6 +151,20 @@
     </Compile>
     <Compile Include="GameTables\GameTables.cs" />
     <Compile Include="GameTables\Structures\GtSpellScalingEntry.cs" />
+    <Compile Include="Parser\BitStream.cs" />
+    <Compile Include="Parser\ColumnStructureEntry.cs" />
+    <Compile Include="Parser\Common.cs" />
+    <Compile Include="Parser\DBHeader.cs" />
+    <Compile Include="Parser\DBReader.cs" />
+    <Compile Include="Parser\DBReaderExtensions.cs" />
+    <Compile Include="Parser\Definitions.cs" />
+    <Compile Include="Parser\FieldStructureEntry.cs" />
+    <Compile Include="Parser\FloatUtil.cs" />
+    <Compile Include="Parser\RelationShipData.cs" />
+    <Compile Include="Parser\StringTable.cs" />
+    <Compile Include="Parser\WDB5.cs" />
+    <Compile Include="Parser\WDB6.cs" />
+    <Compile Include="Parser\WDC1.cs" />
     <Compile Include="Spell\ProcInfo.cs">
     </Compile>
     <Compile Include="Extensions\RichTextBoxExtensions.cs" />

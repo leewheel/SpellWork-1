@@ -1,14 +1,19 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("Item")]
     public sealed class ItemEntry
     {
-        public uint FileDataID;
-        public byte Class;
-        public byte SubClass;
-        public sbyte SoundOverrideSubclass;
+        [Index]
+        public int ID;
+        public uint IconFileDataID;
+        public byte ClassID;
+        public byte SubclassID;
+        public sbyte SoundOverrideSubclassID;
         public sbyte Material;
         public byte InventoryType;
-        public byte Sheath;
-        public byte GroupSoundsID;
+        public byte SheatheType;
+        public byte ItemGroupSoundsID;
     }
 }

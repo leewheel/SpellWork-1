@@ -1,24 +1,16 @@
-﻿using System.Runtime.InteropServices;
+﻿using SpellWork.Parser;
 
 namespace SpellWork.DBC.Structures
 {
-    [StructLayout(LayoutKind.Sequential)]
+    [DBFileName("SpellEffect")]
     public class SpellEffectEntry
     {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public uint[] EffectSpellClassMask;
+        [Index]
         public uint ID;
-        public int SpellID;
         public uint Effect;
-        public uint EffectAura;
         public int EffectBasePoints;
         public uint EffectIndex;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public int[] EffectMiscValues;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public uint[] EffectRadiusIndex;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public uint[] ImplicitTarget;
+        public uint EffectAura;
         public uint DifficultyID;
         public float EffectAmplitude;
         public uint EffectAuraPeriod;
@@ -35,6 +27,20 @@ namespace SpellWork.DBC.Structures
         public uint EffectAttributes;
         public float BonusCoefficientFromAP;
         public float PvPMultiplier;
+        public float Coefficient;
+        public float Variance;
+        public float ResourceCoefficient;
+        public float GroupSizeBasePointsCoefficient;
+        [ArraySize(4)]
+        public uint[] EffectSpellClassMask;
+        [ArraySize(2)]
+        public int[] EffectMiscValues;
+        [ArraySize(2)]
+        public uint[] EffectRadiusIndex;
+        [ArraySize(2)]
+        public uint[] ImplicitTarget;
+        [RelationField]
+        public int SpellID;
 
         public SpellEffectScalingEntry SpellEffectScalingEntry { get; set; }
 

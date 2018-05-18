@@ -1,7 +1,13 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("ScreenEffect")]
     public sealed class ScreenEffectEntry
     {
+        [Index]
+        public int ID;
+        //TODO
         public string Name;
         public int[] field04;
         public ushort field14;

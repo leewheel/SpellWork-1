@@ -1,15 +1,21 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("ItemEffect")]
     public sealed class ItemEffectEntry
     {
-        public uint ItemID;
-        public uint SpellID;
+        [Index]
+        public int ItemID;
+        public int SpellID;
         public int Cooldown;
         public int CategoryCooldown;
         public short Charges;
         public ushort Category;
         public ushort ChrSpecializationID;
-        public byte OrderIndex;
-        public byte Trigger;
+        public byte LegacySlotIndex;
+        public byte TriggerType;
+        [RelationField]
+        public int ParentItemID;
     }
 }

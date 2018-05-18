@@ -1,8 +1,12 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("SpellTargetRestrictions")]
     public sealed class SpellTargetRestrictionsEntry
     {
-        public int SpellID;
+        [Index]
+        public uint ID;
         public float ConeAngle;
         public float Width;
         public uint Targets;
@@ -10,5 +14,7 @@
         public byte DifficultyID;
         public byte MaxAffectedTargets;
         public uint MaxTargetLevel;
+        [RelationField]
+        public int SpellID;
     }
 }

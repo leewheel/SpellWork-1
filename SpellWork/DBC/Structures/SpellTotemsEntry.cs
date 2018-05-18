@@ -1,12 +1,16 @@
-﻿using System.Runtime.InteropServices;
+﻿using SpellWork.Parser;
 
 namespace SpellWork.DBC.Structures
 {
+    [DBFileName("SpellTotems")]
     public class SpellTotemsEntry
     {
+        [Index]
+        public uint ID;
         public int SpellID;
-        public uint[] Totem;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        [ArraySize(2)]
+        public int[] Totem;
+        [ArraySize(2)]
         public ushort[] RequiredTotemCategoryID;
     }
 }

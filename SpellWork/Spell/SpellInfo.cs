@@ -54,7 +54,7 @@ namespace SpellWork.Spell
         public string Name => Spell.Name;
         public string Description => Spell.Description;
         public string Tooltip => Spell.AuraDescription;
-        public int MiscID => Spell.MiscID;
+        public uint MiscID => Misc?.ID ?? 0;
         #endregion
 
         #region SpellMisc
@@ -198,8 +198,8 @@ namespace SpellWork.Spell
         {
             SpellDescriptionVariablesEntry variables;
             Spell = spellEntry;
-            if (DBC.DBC.SpellDescriptionVariables.TryGetValue(spellEntry.DescriptionVariablesID, out variables))
-                DescriptionVariables = variables;
+            //if (DBC.DBC.SpellDescriptionVariables.TryGetValue(spellEntry.DescriptionVariablesID, out variables))
+            //    DescriptionVariables = variables;
         }
 
         public void Write(RichTextBox rtb)
@@ -825,19 +825,20 @@ namespace SpellWork.Spell
                         rtb.AppendLine();
                     }
                     break;
-                case AuraType.SPELL_AURA_SCREEN_EFFECT:
+                /*case AuraType.SPELL_AURA_SCREEN_EFFECT:
                     rtb.SetStyle(Color.DarkBlue, FontStyle.Bold);
                     rtb.AppendFormatLine("ScreenEffect: {0}",
                         DBC.DBC.ScreenEffect.ContainsKey(misc) ? DBC.DBC.ScreenEffect[misc].Name : "?????");
-                    break;
+                    break;*/
             }
         }
 
         private void AppendItemInfo(RichTextBox rtb)
         {
-            var items = DBC.DBC.ItemEffect.Where(effect => effect.Value.SpellID == (int)ID).ToArray();
-            if (!items.Any())
+            if (!DBC.DBC.ItemEffectStore.ContainsKey(ID))
                 return;
+
+            var items = DBC.DBC.ItemEffectStore[ID];
 
             rtb.AppendLine(Separator);
             rtb.SetStyle(Color.Blue, FontStyle.Bold);
@@ -846,20 +847,20 @@ namespace SpellWork.Spell
 
             foreach (var item in items)
             {
-                if (!DBC.DBC.ItemSparse.ContainsKey((int)item.Value.ItemID))
+                if (!DBC.DBC.ItemSparse.ContainsKey(item.ParentItemID))
                 {
-                    rtb.AppendFormatLine($@"   Non-existing Item-sparse.db2 entry { item.Value.ItemID }");
+                    rtb.AppendFormatLine($@"   Non-existing Item-sparse.db2 entry { item.ParentItemID }");
                     continue;
                 }
 
-                var itemTemplate = DBC.DBC.ItemSparse[(int)item.Value.ItemID];
+                var itemTemplate = DBC.DBC.ItemSparse[(int)item.ParentItemID];
 
                 var name = itemTemplate.Name;
                 var description = itemTemplate.Description;
 
                 description = string.IsNullOrEmpty(description) ? string.Empty : $" - \"{ description }\"";
 
-                rtb.AppendFormatLine($@"   { item.Value.ItemID }: { name } { description }");
+                rtb.AppendFormatLine($@"   { item.ParentItemID }: { name } { description }");
             }
         }
 

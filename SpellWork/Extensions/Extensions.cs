@@ -11,6 +11,15 @@ namespace SpellWork.Extensions
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Reverses a string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string Reverse(this string s)
+        {
+            return new string(s.ToCharArray().Reverse().ToArray());
+        }
         public static StringBuilder AppendFormatIfNotNull(this StringBuilder builder, string format, params object[] arg)
         {
             return arg[0].ToUInt32() != 0 ? builder.AppendFormat(format, arg) : builder;

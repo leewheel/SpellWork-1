@@ -1,8 +1,12 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("SpellAuraRestrictions")]
     public class SpellAuraRestrictionsEntry
     {
-        public int SpellID;
+        [Index]
+        public int ID;
         public uint CasterAuraSpell;
         public uint TargetAuraSpell;
         public uint ExcludeCasterAuraSpell;
@@ -12,5 +16,7 @@
         public byte TargetAuraState;
         public byte ExcludeCasterAuraState;
         public byte ExcludeTargetAuraState;
+        [RelationField]
+        public int SpellID;
     }
 }

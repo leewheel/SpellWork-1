@@ -1,8 +1,18 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("SpellVisual")]
     public sealed class SpellVisualEntry
     {
+        [Index]
         public uint ID;
+        public float MissileCastOffsetX;
+        public float MissileCastOffsetY;
+        public float MissileCastOffsetZ;
+        public float MissileImpactOffsetX;
+        public float MissileImpactOffsetY;
+        public float MissileImpactOffsetZ;
         public uint UnkMoP1;
         public uint PrecastKit;
         public uint CastingKit;
@@ -21,12 +31,6 @@
         public uint InstantAreaKit;
         public uint ImpactAreaKit;
         public uint PersistentAreaKit;
-        public float MissileCastOffsetX;
-        public float MissileCastOffsetY;
-        public float MissileCastOffsetZ;
-        public float MissileImpactOffsetX;
-        public float MissileImpactOffsetY;
-        public float MissileImpactOffsetZ;
         public uint UnkCata1;
         public uint Id;
         public uint UnkMoP4;

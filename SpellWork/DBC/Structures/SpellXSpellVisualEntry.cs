@@ -1,9 +1,12 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("SpellXSpellVisual")]
     public sealed class SpellXSpellVisualEntry
     {
-        public int SpellID;
         public uint SpellVisualID;
+        [Index]
         public uint ID;
         public float Chance;
         public ushort CasterPlayerConditionID;
@@ -15,5 +18,7 @@
         public byte Flags;
         public byte DifficultyID;
         public byte Priority;
+        [RelationField]
+        public int SpellID;
     }
 }

@@ -1,11 +1,19 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("SpellInterrupts")]
     public class SpellInterruptsEntry
     {
-        public int SpellID;
-        public uint[] AuraInterruptFlags;
-        public uint[] ChannelInterruptFlags;
-        public ushort InterruptFlags;
+        [Index]
+        public uint ID;
         public byte Difficulty;
+        public ushort InterruptFlags;
+        [ArraySize(2)]
+        public uint[] AuraInterruptFlags;
+        [ArraySize(2)]
+        public uint[] ChannelInterruptFlags;
+        [RelationField]
+        public int SpellID;
     }
 }

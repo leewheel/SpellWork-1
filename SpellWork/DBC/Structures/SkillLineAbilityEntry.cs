@@ -1,19 +1,26 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("SkillLineAbility")]
     public sealed class SkillLineAbilityEntry
     {
+        public ulong RaceMask;
+        [Index]
+        public uint ID;
         public int SpellID;
-        public uint RaceMask;
-        public uint SupercedesSpell;
+        public int SupercedesSpell;
         public ushort SkillLine;
-        public ushort MinSkillLineRank;
         public ushort TrivialSkillLineRankHigh;
         public ushort TrivialSkillLineRankLow;
         public ushort UniqueBit;
         public ushort TradeSkillCategoryID;
-        public byte AquireMethod;
         public byte NumSkillUps;
-        public byte Unknown703;
-        public uint ClassMask;
+        public int ClassMask;
+        public ushort MinSkillLineRank;
+        public byte AquireMethod;
+        public byte Flags;
+        [RelationField]
+        public ushort SkillLineRelation;
     }
 }

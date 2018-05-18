@@ -1,7 +1,12 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("SpellMissile")]
     public sealed class SpellMissileEntry
     {
+        [Index]
+        public uint ID;
         public uint Flags;
         public float DefaultPitchMin;
         public float DefaultPitchMax;

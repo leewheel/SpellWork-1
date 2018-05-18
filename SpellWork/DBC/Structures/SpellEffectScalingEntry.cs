@@ -1,5 +1,8 @@
-﻿namespace SpellWork.DBC.Structures
+﻿using SpellWork.Parser;
+
+namespace SpellWork.DBC.Structures
 {
+    [DBFileName("SpellEffectScaling")]
     public class SpellEffectScalingEntry
     {
         public float Coefficient;
