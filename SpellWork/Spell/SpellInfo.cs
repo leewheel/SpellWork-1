@@ -173,6 +173,36 @@ namespace SpellWork.Spell
         public uint InterruptFlags => Interrupts?.InterruptFlags ?? 0;
         #endregion
 
+        public List<string> AreaNames = new List<string>();
+        public List<ushort> AreaIds = new List<ushort>();
+        public List<string> MapNames = new List<string>();
+        public List<ushort> MapIds = new List<ushort>();
+
+        public void UpdateAreaRelatedFields()
+        {
+            if (RequiredAreasId > 0)
+            {
+                var areas = DBC.DBC.AreaGroupMember.Values.Where(ag => ag.AreaGroupId == RequiredAreasId).ToList();
+                if (areas.Count > 0)
+                {
+                    foreach (var areaGroupMember in areas)
+                    {
+                        var areaId = areaGroupMember.AreaId;
+                        if (!DBC.DBC.AreaTable.ContainsKey(areaId))
+                            continue;
+
+                        var areaEntry = DBC.DBC.AreaTable[areaId];
+                        AreaNames.Add(areaEntry.AreaName);
+                        AreaIds.Add(areaId);
+                        MapIds.Add(areaEntry.MapID);
+                        MapEntry map;
+                        if (DBC.DBC.Map.TryGetValue(areaEntry.MapID, out map))
+                            MapNames.Add(map.MapName);
+                    }
+                }
+            }
+        }
+
         public string ProcInfo
         {
             get
@@ -538,7 +568,11 @@ namespace SpellWork.Spell
                             continue;
 
                         var areaEntry = DBC.DBC.AreaTable[areaId];
-                        rtb.AppendFormatLine("{0} - {1} (Map: {2})", areaId, areaEntry.AreaName, areaEntry.MapID);
+
+                        MapEntry map;
+                        bool hasMapData = DBC.DBC.Map.TryGetValue(areaEntry.MapID, out map);
+
+                        rtb.AppendFormatLine("{0} - {1} (Map: {2} - {3})", areaId, areaEntry.AreaName, areaEntry.MapID, hasMapData ? map.MapName : "");
                     }
 
                     rtb.AppendLine();

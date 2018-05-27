@@ -165,6 +165,7 @@
             this._cbProcFlag = new System.Windows.Forms.CheckBox();
             this._bWrite = new System.Windows.Forms.Button();
             this._bLevelScaling = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).BeginInit();
@@ -575,9 +576,9 @@
             // 
             this.chSpellName.Text = "Name";
             this.chSpellName.Width = 250;
-            //
+            // 
             // chMiscID
-            //
+            // 
             this.chMiscID.Text = "MiscID";
             this.chMiscID.Width = 64;
             // 
@@ -834,6 +835,7 @@
             this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox7.BackColor = System.Drawing.Color.LightGray;
+            this.groupBox7.Controls.Add(this.button1);
             this.groupBox7.Controls.Add(this.label6);
             this.groupBox7.Controls.Add(this.label5);
             this.groupBox7.Controls.Add(this.label4);
@@ -1758,6 +1760,17 @@
             this._bLevelScaling.UseVisualStyleBackColor = true;
             this._bLevelScaling.Click += new System.EventHandler(this.LevelScalingClick);
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(343, 35);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(50, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Reset";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1979,5 +1992,6 @@
         private System.Windows.Forms.ToolStripMenuItem _tsmExit;
         private System.Windows.Forms.Button _bLevelScaling;
         private System.Windows.Forms.RichTextBox _rtbProcSpellInfo;
+        private System.Windows.Forms.Button button1;
     }
 }

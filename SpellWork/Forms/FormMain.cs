@@ -177,13 +177,13 @@ namespace SpellWork.Forms
         private void CbSpellFamilyNamesSelectedIndexChanged(object sender, EventArgs e)
         {
             if (((ComboBox)sender).SelectedIndex != 0)
-                AdvancedFilter();
+                AdvancedSearch();
         }
 
         private void TbAdvansedFilterValKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                AdvancedFilter();
+                AdvancedSearch();
         }
 
         private void AdvancedSearch()
@@ -191,7 +191,7 @@ namespace SpellWork.Forms
             var name = _tbSearchId.Text;
             var id = name.ToUInt32();
             var ic = _tbSearchIcon.Text.ToUInt32();
-            var at = _tbSearchAttributes.Text.ToUInt32();
+            /*var at = _tbSearchAttributes.Text.ToUInt32();
 
             _spellList = (from spellInfo in DBC.DBC.SpellInfoStore.Values
                           where
@@ -205,11 +205,28 @@ namespace SpellWork.Forms
 
             _lvSpellList.VirtualListSize = _spellList.Count;
             if (_lvSpellList.SelectedIndices.Count > 0)
-                _lvSpellList.Items[_lvSpellList.SelectedIndices[0]].Selected = false;
-        }
+                _lvSpellList.Items[_lvSpellList.SelectedIndices[0]].Selected = false;*/
 
-        private void AdvancedFilter()
-        {
+            string[] search = _tbSearchAttributes.Text.Split(' ');
+
+            bool btbSearchAttributes = _tbSearchAttributes.Text.IsEmpty();
+            uint[] atr = new uint[14];
+
+            foreach (string s in search)
+            {
+                string[] a = s.Split('&');
+                if (a.Length >= 2)
+                {
+                    uint atid = a[0].ToUInt32();
+                    uint atval = a[1].ToUInt32();
+
+                    if (atid < 14)
+                        atr[atid] |= atval;
+                    else
+                        MessageBox.Show("Invalid attribute (" + atid.ToString() + ") in Attributes field", "Attributes error!");
+                }
+            }
+
             var bFamilyNames = _cbSpellFamilyName.SelectedIndex != 0;
             var fFamilyNames = _cbSpellFamilyName.SelectedValue.ToInt32();
 
@@ -239,29 +256,141 @@ namespace SpellWork.Forms
             var fieldEffect2Ct = (CompareType)_cbAdvancedEffectFilter2CompareType.SelectedIndex;
 
             // additional filters
-            var advVal1 = _tbAdvancedFilter1Val.Text;
-            var advVal2 = _tbAdvancedFilter2Val.Text;
+            string[] advVal = new string[2];
+            advVal[0] = _tbAdvancedFilter1Val.Text;
+            advVal[1] = _tbAdvancedFilter2Val.Text;
 
-            var field1 = (MemberInfo)_cbAdvancedFilter1.SelectedValue;
-            var field2 = (MemberInfo)_cbAdvancedFilter2.SelectedValue;
+            MemberInfo[] field = new MemberInfo[2];
+            field[0] = (MemberInfo)_cbAdvancedFilter1.SelectedValue;
+            field[1] = (MemberInfo)_cbAdvancedFilter2.SelectedValue;
 
-            var use1Val = !string.IsNullOrEmpty(advVal1);
-            var use2Val = !string.IsNullOrEmpty(advVal2);
+            bool[] useVal = new bool[] { false, false };
+            useVal[0] = !string.IsNullOrEmpty(advVal[0]);
+            useVal[1] = !string.IsNullOrEmpty(advVal[1]);
 
             var field1Ct = (CompareType)_cbAdvancedFilter1CompareType.SelectedIndex;
             var field2Ct = (CompareType)_cbAdvancedFilter2CompareType.SelectedIndex;
 
-            _spellList = DBC.DBC.SpellInfoStore.Values.Where(
-                spell => (!bFamilyNames || spell.SpellFamilyName == fFamilyNames) &&
-                         (!bSpellEffect || spell.HasEffect((SpellEffects) fSpellEffect)) &&
-                         (!bSpellAura || spell.HasAura((AuraType) fSpellAura)) &&
-                         (!bTarget1 || spell.HasTargetA((Targets) fTarget1)) &&
-                         (!bTarget2 || spell.HasTargetB((Targets) fTarget2)) &&
-                         (!use1Val || spell.CreateFilter(field1, advVal1, field1Ct)) &&
-                         (!use2Val || spell.CreateFilter(field2, advVal2, field2Ct)) &&
-                         (spell.SpellEffectInfoStore.Any(effect =>
+            _spellList.Clear();
+
+            foreach (var itr in DBC.DBC.SpellInfoStore)
+            {
+                SpellInfo spell = itr.Value;
+
+                if (id != 0 && spell.ID != id)
+                    continue;
+
+                if (id == 0 && !name.IsEmpty() && !spell.Name.ToLower().ContainsText(name.ToLower()))
+                    continue;
+
+                if (ic != 0 && spell.IconFileDataID != ic)
+                    continue;
+
+                if (bFamilyNames && spell.SpellFamilyName != fFamilyNames)
+                    continue;
+
+                if (!btbSearchAttributes)
+                {
+                    if (atr[0] != 0 && (spell.Attributes & atr[0]) == 0) continue;
+                    if (atr[1] != 0 && (spell.AttributesEx & atr[1]) == 0) continue;
+                    if (atr[2] != 0 && (spell.AttributesEx2 & atr[2]) == 0) continue;
+                    if (atr[3] != 0 && (spell.AttributesEx3 & atr[3]) == 0) continue;
+                    if (atr[4] != 0 && (spell.AttributesEx4 & atr[4]) == 0) continue;
+                    if (atr[5] != 0 && (spell.AttributesEx5 & atr[5]) == 0) continue;
+                    if (atr[6] != 0 && (spell.AttributesEx6 & atr[6]) == 0) continue;
+                    if (atr[7] != 0 && (spell.AttributesEx7 & atr[7]) == 0) continue;
+                    if (atr[8] != 0 && (spell.AttributesEx8 & atr[8]) == 0) continue;
+                    if (atr[9] != 0 && (spell.AttributesEx9 & atr[9]) == 0) continue;
+                    if (atr[10] != 0 && (spell.AttributesEx10 & atr[10]) == 0) continue;
+                    if (atr[11] != 0 && (spell.AttributesEx11 & atr[11]) == 0) continue;
+                    if (atr[12] != 0 && (spell.AttributesEx12 & atr[12]) == 0) continue;
+                    if (atr[13] != 0 && (spell.AttributesEx13 & atr[13]) == 0) continue;
+                }
+
+                if (bSpellEffect && !spell.HasEffect((SpellEffects)fSpellEffect))
+                    continue;
+                
+                if (bSpellAura && !spell.HasAura((AuraType)fSpellAura))
+                    continue;
+
+                if (bTarget1 && !spell.HasTargetA((Targets)fTarget1))
+                    continue;
+
+                if (bTarget2 && !spell.HasTargetB((Targets)fTarget2))
+                    continue;
+
+                bool skip = false;
+                for (int i = 0; i < 2; i++)
+                {
+                    if (useVal[i] && field[i].Name == "AreaNames")
+                    {
+                        bool found = false;
+                        foreach (var area in spell.AreaNames)
+                        {
+                            if (area.ToLower().Contains(advVal[i].ToLower()))
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            skip = true;
+                    }
+                    else if (useVal[i] && field[i].Name == "MapNames")
+                    {
+                        bool found = false;
+                        foreach (var map in spell.MapNames)
+                        {
+                            if (map.ToLower().Contains(advVal[i].ToLower()))
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            skip = true;
+                    }
+                    else if (useVal[i] && field[i].Name == "AreaIds")
+                    {
+                        bool found = false;
+                        foreach (var area in spell.AreaIds)
+                        {
+                            if (area == advVal[i].ToInt32())
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            skip = true;
+                    }
+                    else if (useVal[i] && field[i].Name == "MapIds")
+                    {
+                        bool found = false;
+                        foreach (var map in spell.MapIds)
+                        {
+                            if (map == advVal[i].ToInt32())
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            skip = true;
+                    }
+                    else if (useVal[i] && !spell.CreateFilter(field[i], advVal[i], field1Ct))
+                        skip = true;
+                }
+                if (skip)
+                    continue;
+                if (!spell.SpellEffectInfoStore.Any(effect =>
                          (!use1EffectVal || effect.Value.CreateFilter(fieldEffect1, advEffectVal1, fieldEffect1Ct)) &&
-                         (!use2EffectVal || effect.Value.CreateFilter(fieldEffect2, advEffectVal2, fieldEffect2Ct))))).ToList();
+                         (!use2EffectVal || effect.Value.CreateFilter(fieldEffect2, advEffectVal2, fieldEffect2Ct))))
+                    continue;
+
+                // all criteries met, add spell to found spells
+                _spellList.Add(spell);
+            }
 
             _lvSpellList.VirtualListSize = _spellList.Count;
             if (_lvSpellList.SelectedIndices.Count > 0)
@@ -653,5 +782,38 @@ namespace SpellWork.Forms
         }
 
         #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            _tbSearchId.Text = "";
+            _tbSearchIcon.Text = "";
+            _tbSearchAttributes.Text = "";
+
+            _cbSpellFamilyName.SelectedIndex = 0;
+            _cbSpellAura.SelectedIndex = 0;
+            _cbSpellEffect.SelectedIndex = 0;
+            _cbTarget1.SelectedIndex = 0;
+            _cbTarget2.SelectedIndex = 0;
+
+            // additional filtert
+            _tbAdvancedFilter1Val.Text = "";
+            _tbAdvancedFilter2Val.Text = "";
+
+            _cbAdvancedFilter1.SelectedIndex = 0;
+            _cbAdvancedFilter2.SelectedIndex = 0;
+
+            _cbAdvancedFilter1CompareType.SelectedIndex = 0;
+            _cbAdvancedFilter2CompareType.SelectedIndex = 0;
+
+            // effect filtert
+            _tbAdvancedEffectFilter1Val.Text = "";
+            _tbAdvancedEffectFilter2Val.Text = "";
+
+            _cbAdvancedEffectFilter1.SelectedIndex = 0;
+            _cbAdvancedEffectFilter2.SelectedIndex = 0;
+
+            _cbAdvancedEffectFilter1CompareType.SelectedIndex = 0;
+            _cbAdvancedEffectFilter2CompareType.SelectedIndex = 0;
+        }
     }
 }

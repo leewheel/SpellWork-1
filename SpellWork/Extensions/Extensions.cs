@@ -262,6 +262,11 @@ namespace SpellWork.Extensions
 
             return attrs?.Length > 0 ? attrs[0].FullName : @enum.ToString();
         }
+
+        public static bool IsEmpty(this String str)
+        {
+            return str == String.Empty;
+        }
     }
 
     [AttributeUsage(AttributeTargets.Field)]

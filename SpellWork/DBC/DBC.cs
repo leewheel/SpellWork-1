@@ -64,6 +64,7 @@ namespace SpellWork.DBC
         public static DBReader<SpellReagentsEntry>               SpellReagents { get; set; }
         public static DBReader<SpellReagentsCurrencyEntry>       SpellReagentsCurrency { get; set; }
         public static DBReader<SpellMissileEntry>                SpellMissile { get; set; }
+        public static DBReader<MapEntry> Map { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
         // ReSharper restore CollectionNeverUpdated.Global
 
@@ -380,6 +381,9 @@ namespace SpellWork.DBC
                     SpellInfoStore[effect.Value.SpellID].Totems = effect.Value;
                 }*/
             }));
+
+            foreach (var spell in SpellInfoStore)
+                spell.Value.UpdateAreaRelatedFields();
 
             GameTable<GtSpellScalingEntry>.Open($@"{Settings.Default.GtPath}\SpellScaling.txt");
         }
