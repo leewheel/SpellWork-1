@@ -121,7 +121,7 @@
                     continue;
                 }
 
-                if (!string.IsNullOrWhiteSpace(name) && !spellInfo.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
+                if (id == 0 && !string.IsNullOrWhiteSpace(name) && !spellInfo.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
