@@ -1,47 +1,31 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using SpellWork.Forms;
-using SpellWork.Properties;
+using MudBlazor.Services;
+using SpellWork.Components;
+using SpellWork.Services.RunOnce;
 
-namespace SpellWork
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+builder.Services.AddMudServices();
+
+builder.Services.AddHostedService<DBCLoaderService>();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
 {
-    static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            var dbcPath = $"{Settings.Default.DbcPath}\\{Settings.Default.Locale}";
-            if (!Directory.Exists(dbcPath))
-            {
-                MessageBox.Show($"Files in {Path.GetFullPath(dbcPath)} missing", @"Missing files", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            try
-            {
-                DBC.DBC.Load();
-                Application.Run(new FormMain());
-            }
-            catch (DirectoryNotFoundException dnfe)
-            {
-                MessageBox.Show(dnfe.Message, @"Missing required DBC file!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (ArgumentException ae)
-            {
-                MessageBox.Show(ae.Message, @"DBC file has wrong structure!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, @"SpellWork Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                MessageBox.Show(ex.ToString());
-            }
-        }
-    }
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
+
+app.UseAntiforgery();
+
+app.MapStaticAssets();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+
+app.Run();
