@@ -3,10 +3,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 7.x
+      - main
 jobs:
   build_and_push:
-    uses: The-Legion-Preservation-Project/SpellWork/.github/workflows/docker.yml@7.x
+    uses: The-Legion-Preservation-Project/SpellWork/.github/workflows/docker.yml@main
     secrets:
       docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
       docker_hub_access_token: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
